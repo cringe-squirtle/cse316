@@ -8,11 +8,15 @@ export class ListItemCard extends Component {
         
         return <div className='list_item_card_not_completed'>Pending</div>;
     }
+
+    editItem(){
+        this.props.editItem(this.props.listItem);
+    }
     
 
     render() {
         return (
-            <div className='list_item_card' onClick={()=>console.log(12)}>
+            <div className='list_item_card' onClick={this.editItem.bind(this)}>
                 <div className='list_item_card_description'>
                     {this.props.listItem.description}
                 </div>

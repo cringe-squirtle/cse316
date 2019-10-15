@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ListItemCard from './ListItemCard'
-import { thisExpression } from '@babel/types';
 
 export class ListItemsTable extends Component {
 
@@ -31,7 +30,7 @@ export class ListItemsTable extends Component {
 
     moveCardDown(index) {
         let num = this.props.todoList.items.length;
-        if(index>=num)
+        if(index>=num-1)
             return
 
         let temp = this.props.todoList.items[index];
@@ -50,7 +49,7 @@ export class ListItemsTable extends Component {
 
     foolProof(){
         let num = this.props.todoList.items.length;
-        if(num==0)
+        if(num===0)
             return
         let bts=document.getElementsByClassName("list_item_card_button");
         Array.from(bts).forEach((e)=>{
@@ -61,7 +60,7 @@ export class ListItemsTable extends Component {
     }
 
     sortByTask(){
-        if(this.current_sort_criteria==this.sort_criteria.task_increasing){
+        if(this.current_sort_criteria===this.sort_criteria.task_increasing){
             this.current_sort_criteria=this.sort_criteria.task_decreasing;
         }else
             this.current_sort_criteria=this.sort_criteria.task_increasing;
@@ -70,7 +69,7 @@ export class ListItemsTable extends Component {
     }
 
     sortByDueDate(){
-        if(this.current_sort_criteria==this.sort_criteria.due_date_increasing){
+        if(this.current_sort_criteria===this.sort_criteria.due_date_increasing){
             this.current_sort_criteria=this.sort_criteria.due_date_decreasing;
         }else
             this.current_sort_criteria=this.sort_criteria.due_date_increasing;
@@ -79,7 +78,7 @@ export class ListItemsTable extends Component {
     }
 
     sortByStatus(){
-        if(this.current_sort_criteria==this.sort_criteria.status_increasing){
+        if(this.current_sort_criteria===this.sort_criteria.status_increasing){
             this.current_sort_criteria=this.sort_criteria.status_decreasing;
         }else
             this.current_sort_criteria=this.sort_criteria.status_increasing;
@@ -88,15 +87,15 @@ export class ListItemsTable extends Component {
     }
 
     compare(item1, item2){
-        if(this.current_sort_criteria==this.sort_criteria.task_decreasing ||
-            this.current_sort_criteria==this.sort_criteria.due_date_decreasing ||
-            this.current_sort_criteria==this.sort_criteria.status_decreasing){
+        if(this.current_sort_criteria===this.sort_criteria.task_decreasing ||
+            this.current_sort_criteria===this.sort_criteria.due_date_decreasing ||
+            this.current_sort_criteria===this.sort_criteria.status_decreasing){
             let temp=item1;
             item1=item2;
             item2=temp
         }
-        if(this.current_sort_criteria==this.sort_criteria.task_increasing ||
-            this.current_sort_criteria==this.sort_criteria.task_decreasing){
+        if(this.current_sort_criteria===this.sort_criteria.task_increasing ||
+            this.current_sort_criteria===this.sort_criteria.task_decreasing){
                 if(item1.description<item2.description)
                     return -1;
                 if(item1.description>item2.description)
@@ -104,8 +103,8 @@ export class ListItemsTable extends Component {
                 else
                     return 0;
             }
-        if(this.current_sort_criteria==this.sort_criteria.due_date_increasing ||
-            this.current_sort_criteria==this.sort_criteria.due_date_decreasing){
+        if(this.current_sort_criteria===this.sort_criteria.due_date_increasing ||
+            this.current_sort_criteria===this.sort_criteria.due_date_decreasing){
                 let date1 = new Date(item1.due_date);
                 let date2 = new Date(item2.due_date);
                 if(date1<date2)
@@ -115,8 +114,8 @@ export class ListItemsTable extends Component {
                 else
                     return 0;
             }
-        if(this.current_sort_criteria==this.sort_criteria.status_increasing ||
-            this.current_sort_criteria==this.sort_criteria.status_decreasing){
+        if(this.current_sort_criteria===this.sort_criteria.status_increasing ||
+            this.current_sort_criteria===this.sort_criteria.status_decreasing){
                 if(item1.completed<item2.completed)
                     return -1;
                 if(item1.completed>item2.completed)
@@ -138,16 +137,18 @@ export class ListItemsTable extends Component {
                 {
                     this.props.todoList.items.map((todoItem, index)=>(
                         <ListItemCard 
+                            editItem={this.props.editItem.bind(this)}
                             index={index}
                             key={todoItem.key}
-                            listItem={todoItem} 
+                            listItem={todoItem}
                             moveCardUp={this.moveCardUp.bind(this)}
                             moveCardDown={this.moveCardDown.bind(this)}
                             deleteCard={this.deleteCard.bind(this)}/>
                     ))
 
                 }
-                <div className='list_item_add_card' >+</div>
+                <div className='list_item_add_card' 
+                onClick={this.props.editItem.bind(this, null)}>&#x2b;</div>
             </div>
         )
     }
