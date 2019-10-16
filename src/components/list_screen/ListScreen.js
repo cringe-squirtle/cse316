@@ -4,7 +4,6 @@ import ListItemsTable from './ListItemsTable'
 import ListTrash from './ListTrash'
 import Modal from '../../modal'
 import ChangeList from '../../lib/ChangeList'
-import ChangeList_Transaction from '../../lib/ChangeList_Transaction'
 
 export class ListScreen extends Component {
     getListName() {

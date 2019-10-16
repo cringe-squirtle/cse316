@@ -32,6 +32,19 @@ export class ChangeList{
             let index = this.new_value;
             this.target.props.todoList.items.splice(index, 1);
         }
+        else if(this.type == "edit_item"){
+            let to_be_edit = this.old_value;
+            let index = this.new_value;
+            let items = this.target.props.todoList.items;
+            if(index>items.length || index<0){
+                return;
+            }else if(index == items.length){
+                items.push(to_be_edit);
+            }else{
+                this.before_edit = items[index];
+                items[index]=to_be_edit;
+            }
+        }
         this.callback();
     }
 
@@ -72,6 +85,20 @@ export class ChangeList{
                 }
             }
             this.target.props.todoList.items=new_items;
+        }
+        else if(this.type == "edit_item"){
+            let to_be_edit = this.old_value;
+            let index = this.new_value;
+            let items = this.target.props.todoList.items;
+            if(index>=items.length || index<0){
+                return;
+            }else if(index == items.length-1){
+                items.pop();
+            }else{
+                console.log(this.before_edit);
+                items[index]=this.before_edit;
+            }
+            console.log(this.target.props.todoList)
         }
         this.callback();
     }

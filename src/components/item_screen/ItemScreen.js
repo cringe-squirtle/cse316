@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+import ChangeList from '../../lib/ChangeList'
 export class ItemScreen extends Component {
 
     state={
@@ -22,18 +22,19 @@ export class ItemScreen extends Component {
             completed: this.state.completed
         }
         
-        // old_todoList = new Todo_List();
-        // old_todoList.setList(this.props.todoList);
-
+        let index = -1;
         if(this.props.todoItem==null){
-            this.props.todoList.items.push(item);
+
+            index = item.key;
+            
         }else{
-            let index = this.props.todoList.items.indexOf(this.props.todoItem);
-            this.props.todoList.items[index] = item;
+            index = this.props.todoList.items.indexOf(this.props.todoItem);
         }
 
-        // window.tps.addTransaction(new ChangeList_Transaction(old_todoList, this.props.todoList));
-        this.props.loadList(this.props.todoList);
+        let new_transaction = new ChangeList(item, index, this, "edit_item", ()=>{
+            this.props.loadList(this.props.todoList)
+        });
+        window.tps.addTransaction(new_transaction);
     }
 
 
