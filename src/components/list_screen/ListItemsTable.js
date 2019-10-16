@@ -106,8 +106,25 @@ export class ListItemsTable extends Component {
             this.current_sort_criteria=this.sort_criteria.task_decreasing;
         }else
             this.current_sort_criteria=this.sort_criteria.task_increasing;
-        this.props.todoList.items.sort(this.compare.bind(this));
-        this.setState(this.props.todoList, this.foolProof.bind(this))
+
+        let old_order = [];
+        let items = this.props.todoList.items;
+        for(let i = 0; i<items.length;i++){
+            old_order.push(items[i].key);
+        }
+        items.sort(this.compare.bind(this));
+
+        let new_order = [];
+        for(let i = 0; i<items.length;i++){
+            new_order.push(items[i].key);
+        }
+
+        let callback = () =>{
+            this.setState(this.props.todoList, this.foolProof)
+        }
+
+        let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
+        window.tps.addTransaction(new_transaction);
     }
 
     sortByDueDate(){
@@ -115,8 +132,24 @@ export class ListItemsTable extends Component {
             this.current_sort_criteria=this.sort_criteria.due_date_decreasing;
         }else
             this.current_sort_criteria=this.sort_criteria.due_date_increasing;
-        this.props.todoList.items.sort(this.compare.bind(this));
-        this.setState(this.props.todoList, this.foolProof.bind(this))
+        let old_order = [];
+        let items = this.props.todoList.items;
+        for(let i = 0; i<items.length;i++){
+            old_order.push(items[i].key);
+        }
+        items.sort(this.compare.bind(this));
+
+        let new_order = [];
+        for(let i = 0; i<items.length;i++){
+            new_order.push(items[i].key);
+        }
+
+        let callback = () =>{
+            this.setState(this.props.todoList, this.foolProof)
+        }
+
+        let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
+        window.tps.addTransaction(new_transaction);
     }
 
     sortByStatus(){
@@ -124,8 +157,25 @@ export class ListItemsTable extends Component {
             this.current_sort_criteria=this.sort_criteria.status_decreasing;
         }else
             this.current_sort_criteria=this.sort_criteria.status_increasing;
-        this.props.todoList.items.sort(this.compare.bind(this));
-        this.setState(this.props.todoList, this.foolProof.bind(this))
+
+        let old_order = [];
+        let items = this.props.todoList.items;
+        for(let i = 0; i<items.length;i++){
+            old_order.push(items[i].key);
+        }
+        items.sort(this.compare.bind(this));
+
+        let new_order = [];
+        for(let i = 0; i<items.length;i++){
+            new_order.push(items[i].key);
+        }
+
+        let callback = () =>{
+            this.setState(this.props.todoList, this.foolProof)
+        }
+
+        let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
+        window.tps.addTransaction(new_transaction);
     }
 
     compare(item1, item2){

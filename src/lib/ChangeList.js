@@ -56,6 +56,7 @@ export class ChangeList{
             this.target.props.todoList.owner = this.old_value;
         }
         else if(this.type == "move"){
+            this.target.current_sort_criteria=-1;
             let items = this.target.props.todoList.items;
             for(let i=0; i<this.old_value.length; i++){
                 for(let j=0; j<items.length;j++){

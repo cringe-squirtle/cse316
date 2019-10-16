@@ -45,6 +45,16 @@ class App extends Component {
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
     this.setState({currentList: todoListToLoad}, this.foolProof);
     
+    let new_lists = [];
+    new_lists.push(todoListToLoad);
+    let index = this.state.todoLists.indexOf(todoListToLoad);
+    for(let i=0; i< this.state.todoLists.length;i++){
+      if(i==index)
+        continue;
+      new_lists.push(this.state.todoLists[i]);
+    }
+    this.setState({todoLists: new_lists});
+
     console.log("currentList: " + this.state.currentList);
     console.log("currentScreen: " + this.state.currentScreen);
   }
