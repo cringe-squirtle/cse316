@@ -3,6 +3,7 @@ import testTodoListData from './TestTodoListData.json'
 import HomeScreen from './components/home_screen/HomeScreen'
 import ItemScreen from './components/item_screen/ItemScreen'
 import ListScreen from './components/list_screen/ListScreen'
+import JSTPS from './lib/JSTPS'
 
 const AppScreen = {
   HOME_SCREEN: "HOME_SCREEN",
@@ -10,22 +11,40 @@ const AppScreen = {
   ITEM_SCREEN: "ITEM_SCREEN"
 }
 
+window.tps = new JSTPS();
+window.onkeydown = (e) =>{
+  if(e.ctrlKey && (e.key==='z' || e.key==='Z')){
+    window.tps.undoTransaction();
+  }
+  if(e.ctrlKey && (e.key==='y' || e.key==='Y')){
+    window.tps.doTransaction();
+  }
+}
+
+
 class App extends Component {
+
+
   state = {
     currentScreen: AppScreen.HOME_SCREEN,
     todoLists: testTodoListData.todoLists,
     currentList: null,
-    currentItem: null
+    currentItem: null,
+    tps : new JSTPS()
   }
 
+
   goHome = () => {
+
     this.setState({currentScreen: AppScreen.HOME_SCREEN});
     this.setState({currentList: null});
+    window.tps = new JSTPS();
   }
 
   loadList = (todoListToLoad) => {
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
     this.setState({currentList: todoListToLoad}, this.foolProof);
+    
     console.log("currentList: " + this.state.currentList);
     console.log("currentScreen: " + this.state.currentScreen);
   }
@@ -58,7 +77,6 @@ class App extends Component {
   }
 
   editItem(todoItemToEdit){
-    console.log("item",todoItemToEdit)
     this.setState({currentItem: todoItemToEdit});
     this.setState({currentScreen: AppScreen.ITEM_SCREEN});
   }
@@ -75,12 +93,14 @@ class App extends Component {
           goHome={this.goHome.bind(this)}
           editItem={this.editItem.bind(this)}
           todoList={this.state.currentList} 
-          todoLists={this.state.todoLists}/>;
+          todoLists={this.state.todoLists}
+          tps={this.state.tps}/>;
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen 
           todoItem={this.state.currentItem}
           todoList={this.state.currentList}
-          loadList={this.loadList.bind(this)}/>;
+          loadList={this.loadList.bind(this)}
+          tps={this.state.tps}/>;
       default:
         return <div>ERROR</div>;
     }

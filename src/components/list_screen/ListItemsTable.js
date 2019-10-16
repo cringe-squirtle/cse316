@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ListItemCard from './ListItemCard'
-
+import ChangeList from '../../lib/ChangeList'
 export class ListItemsTable extends Component {
 
 
@@ -19,32 +19,74 @@ export class ListItemsTable extends Component {
         if(index<=0)
             return
 
+        let old_order = [];
+        let items = this.props.todoList.items;
+        for(let i = 0; i<items.length;i++){
+            old_order.push(items[i].key);
+        }
+
         let temp = this.props.todoList.items[index];
         this.props.todoList.items[index]=this.props.todoList.items[index-1];
         this.props.todoList.items[index-1]=temp;
+        
+        let new_order = [];
+        for(let i = 0; i<items.length;i++){
+            new_order.push(items[i].key);
+        }
 
-        this.setState(this.props.todoList, this.foolProof)
+        let callback = () =>{
+            this.setState(this.props.todoList, this.foolProof)
+        }
+
+        let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
+        window.tps.addTransaction(new_transaction);
         
 
     }
 
     moveCardDown(index) {
+
+        
+
         let num = this.props.todoList.items.length;
         if(index>=num-1)
             return
+
+        let old_order = [];
+        let items = this.props.todoList.items;
+        for(let i = 0; i<items.length;i++){
+            old_order.push(items[i].key);
+        }
 
         let temp = this.props.todoList.items[index];
         this.props.todoList.items[index]=this.props.todoList.items[index+1];
         this.props.todoList.items[index+1]=temp;
 
-        this.setState(this.props.todoList, this.foolProof)
         
 
+        let new_order = [];
+        for(let i = 0; i<items.length;i++){
+            new_order.push(items[i].key);
+        }
+
+        let callback = () =>{
+            this.setState(this.props.todoList, this.foolProof)
+        }
+
+        let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
+        window.tps.addTransaction(new_transaction);
+        
     }
 
     deleteCard(index) {
-        this.props.todoList.items.splice(index, 1);
-        this.setState(this.props.todoList, this.foolProof)
+        let to_be_removed = this.props.todoList.items[index];
+
+        let callback = () =>{
+            this.setState(this.props.todoList, this.foolProof)
+        }
+
+        let new_transaction = new ChangeList(to_be_removed, index, this, "delete", callback);
+        window.tps.addTransaction(new_transaction);
     }
 
     foolProof(){

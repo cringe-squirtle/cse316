@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
 
 export class ItemScreen extends Component {
 
@@ -16,20 +15,24 @@ export class ItemScreen extends Component {
     submitItemChange(){
 
         let item = {
-            key: this.props.todoItem?this.props.todoItem.key:this.props.todoList.items.length,  // if item exists, then using the same key, else key will be the last index
+            key: this.props.todoItem?this.props.todoItem.key:this.props.todoList.items.length,
             description: this.state.description,
             assigned_to: this.state.assigned_to,
             due_date: this.state.due_date,
             completed: this.state.completed
         }
         
-        
+        // old_todoList = new Todo_List();
+        // old_todoList.setList(this.props.todoList);
+
         if(this.props.todoItem==null){
-            console.log(item);
             this.props.todoList.items.push(item);
+        }else{
+            let index = this.props.todoList.items.indexOf(this.props.todoItem);
+            this.props.todoList.items[index] = item;
         }
 
-        this.setState(this.props.todoItem);
+        // window.tps.addTransaction(new ChangeList_Transaction(old_todoList, this.props.todoList));
         this.props.loadList(this.props.todoList);
     }
 
@@ -90,9 +93,9 @@ export class ItemScreen extends Component {
     }
 }
 
-ItemScreen.propTypes = {
-    currentScreen: PropTypes.string.isRequired,
-    todoItem: PropTypes.object.isRequired
-}
+// ItemScreen.propTypes = {
+//     currentScreen: PropTypes.string.isRequired,
+//     todoItem: PropTypes.object.isRequired
+// }
 
 export default ItemScreen

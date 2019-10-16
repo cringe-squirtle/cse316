@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import ListHeading from './ListHeading'
 import ListItemsTable from './ListItemsTable'
 import ListTrash from './ListTrash'
-import Modal from '../../modal';
+import Modal from '../../modal'
+import ChangeList from '../../lib/ChangeList'
+import ChangeList_Transaction from '../../lib/ChangeList_Transaction'
 
 export class ListScreen extends Component {
     getListName() {
@@ -14,13 +16,22 @@ export class ListScreen extends Component {
     }
 
     setListName(event) {
-        this.props.todoList.name = event.target.value;
-        this.setState(this.props.todoList);
+        let old_value = this.props.todoList.name;
+        let new_value = event.target.value;
+        let callback = () =>{
+            this.setState(this.props.todoList);
+        }
+        let new_transaction = new ChangeList(old_value, new_value, this, "name", callback);
+
+        window.tps.addTransaction(new_transaction);
     }
 
     setListOwner(event) {
-        this.props.todoList.owner = event.target.value;
-        this.setState(this.props.todoList);
+        let old_value = this.props.todoList.owner;
+        let new_value = event.target.value;
+        let new_transaction = new ChangeList(old_value, new_value, this, "owner");
+
+        window.tps.addTransaction(new_transaction);
     }
 
     getListOwner() {
