@@ -30,31 +30,36 @@ class App extends Component {
     todoLists: testTodoListData.todoLists,
     currentList: null,
     currentItem: null,
-    tps : new JSTPS()
   }
 
 
   goHome = () => {
-
     this.setState({currentScreen: AppScreen.HOME_SCREEN});
     this.setState({currentList: null});
     window.tps = new JSTPS();
   }
 
   loadList = (todoListToLoad) => {
+
     this.setState({currentScreen: AppScreen.LIST_SCREEN});
     this.setState({currentList: todoListToLoad}, this.foolProof);
-    
+
+    console.log(todoListToLoad);
     let new_lists = [];
     new_lists.push(todoListToLoad);
     let index = this.state.todoLists.indexOf(todoListToLoad);
-    for(let i=0; i< this.state.todoLists.length;i++){
+
+    for(let i=0; i<this.state.todoLists.length;i++){
       if(i==index)
         continue;
       new_lists.push(this.state.todoLists[i]);
     }
-    this.setState({todoLists: new_lists});
 
+    for(let i=0; i<new_lists.length; i++){
+      new_lists[i].key=i;
+    }
+
+    this.setState({todoLists: new_lists});
     console.log("currentList: " + this.state.currentList);
     console.log("currentScreen: " + this.state.currentScreen);
   }
@@ -102,15 +107,16 @@ class App extends Component {
         return <ListScreen
           goHome={this.goHome.bind(this)}
           editItem={this.editItem.bind(this)}
+          loadList={this.loadList.bind(this)}
           todoList={this.state.currentList} 
           todoLists={this.state.todoLists}
           tps={this.state.tps}/>;
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen 
+        
           todoItem={this.state.currentItem}
           todoList={this.state.currentList}
-          loadList={this.loadList.bind(this)}
-          tps={this.state.tps}/>;
+          loadList={this.loadList.bind(this)}/>;
       default:
         return <div>ERROR</div>;
     }

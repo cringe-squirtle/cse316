@@ -28,17 +28,20 @@ export class ChangeList{
             }
         }
         else if(this.type == "delete"){
-            let to_be_removed = this.old_value;
             let index = this.new_value;
-            this.target.props.todoList.items.splice(index, 1);
+            let items = this.target.props.todoList.items;
+            items.splice(index, 1);
+            this.target.props.todoList.max-=1;
         }
         else if(this.type == "edit_item"){
             let to_be_edit = this.old_value;
             let index = this.new_value;
             let items = this.target.props.todoList.items;
+            this.old_length = items.length;
             if(index>items.length || index<0){
                 return;
             }else if(index == items.length){
+                this.target.props.todoList.max+=1;
                 items.push(to_be_edit);
             }else{
                 this.before_edit = items[index];
@@ -85,6 +88,7 @@ export class ChangeList{
                     new_items.push(items[i-1]);
                 }
             }
+            this.target.props.todoList.max+=1;
             this.target.props.todoList.items=new_items;
         }
         else if(this.type == "edit_item"){
@@ -93,7 +97,8 @@ export class ChangeList{
             let items = this.target.props.todoList.items;
             if(index>=items.length || index<0){
                 return;
-            }else if(index == items.length-1){
+            }else if(index == this.old_length){
+                this.target.props.todoList.max-=1;
                 items.pop();
             }else{
                 console.log(this.before_edit);

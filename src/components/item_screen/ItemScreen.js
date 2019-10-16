@@ -13,9 +13,8 @@ export class ItemScreen extends Component {
         this.props.loadList(this.props.todoList);
     }
     submitItemChange(){
-
         let item = {
-            key: this.props.todoItem?this.props.todoItem.key:this.props.todoList.items.length,
+            key: this.props.todoItem?this.props.todoItem.key:this.props.todoList.max,
             description: this.state.description,
             assigned_to: this.state.assigned_to,
             due_date: this.state.due_date,
@@ -24,7 +23,6 @@ export class ItemScreen extends Component {
         
         let index = -1;
         if(this.props.todoItem==null){
-
             index = item.key;
             
         }else{
@@ -32,6 +30,7 @@ export class ItemScreen extends Component {
         }
 
         let new_transaction = new ChangeList(item, index, this, "edit_item", ()=>{
+            console.log("called", this.props.todoList.max);
             this.props.loadList(this.props.todoList)
         });
         window.tps.addTransaction(new_transaction);

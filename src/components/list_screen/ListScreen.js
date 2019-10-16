@@ -18,7 +18,7 @@ export class ListScreen extends Component {
         let old_value = this.props.todoList.name;
         let new_value = event.target.value;
         let callback = () =>{
-            this.setState(this.props.todoList);
+            this.props.loadList(this.props.todoList);
         }
         let new_transaction = new ChangeList(old_value, new_value, this, "name", callback);
 
@@ -28,7 +28,10 @@ export class ListScreen extends Component {
     setListOwner(event) {
         let old_value = this.props.todoList.owner;
         let new_value = event.target.value;
-        let new_transaction = new ChangeList(old_value, new_value, this, "owner");
+        let callback = () =>{
+            this.props.loadList(this.props.todoList);
+        }
+        let new_transaction = new ChangeList(old_value, new_value, this, "owner", callback);
 
         window.tps.addTransaction(new_transaction);
     }
@@ -63,6 +66,7 @@ export class ListScreen extends Component {
                 </div>
                 <ListItemsTable 
                 editItem={this.props.editItem.bind(this)}
+                loadList={this.props.loadList.bind(this)}
                 todoList={this.props.todoList} />
                 <Modal 
                 goHome={this.props.goHome.bind(this)}

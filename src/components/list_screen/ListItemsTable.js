@@ -14,6 +14,13 @@ export class ListItemsTable extends Component {
     }
     current_sort_criteria=-1;
 
+    resetCardKey(){
+        let items = this.props.todoList.items;
+        for(let i=0;i<items.length;i++){
+            items[i].key=i;
+        }
+    }
+
     moveCardUp(index) {
 
         if(index<=0)
@@ -35,7 +42,7 @@ export class ListItemsTable extends Component {
         }
 
         let callback = () =>{
-            this.setState(this.props.todoList, this.foolProof)
+            this.props.loadList(this.props.todoList);
         }
 
         let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
@@ -69,8 +76,10 @@ export class ListItemsTable extends Component {
             new_order.push(items[i].key);
         }
 
+        console.log(old_order, new_order);
+
         let callback = () =>{
-            this.setState(this.props.todoList, this.foolProof)
+            this.props.loadList(this.props.todoList);
         }
 
         let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
@@ -89,17 +98,6 @@ export class ListItemsTable extends Component {
         window.tps.addTransaction(new_transaction);
     }
 
-    foolProof(){
-        let num = this.props.todoList.items.length;
-        if(num===0)
-            return
-        let bts=document.getElementsByClassName("list_item_card_button");
-        Array.from(bts).forEach((e)=>{
-            e.classList.remove("disabled");
-        })
-        document.getElementById("button_move_up_0").classList.add("disabled");
-        document.getElementById("button_move_down_"+(num-1)).classList.add("disabled");
-    }
 
     sortByTask(){
         if(this.current_sort_criteria===this.sort_criteria.task_increasing){
@@ -120,7 +118,7 @@ export class ListItemsTable extends Component {
         }
 
         let callback = () =>{
-            this.setState(this.props.todoList, this.foolProof)
+            this.props.loadList(this.props.todoList);
         }
 
         let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
@@ -145,7 +143,7 @@ export class ListItemsTable extends Component {
         }
 
         let callback = () =>{
-            this.setState(this.props.todoList, this.foolProof)
+            this.props.loadList(this.props.todoList);
         }
 
         let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);
@@ -171,7 +169,7 @@ export class ListItemsTable extends Component {
         }
 
         let callback = () =>{
-            this.setState(this.props.todoList, this.foolProof)
+            this.props.loadList(this.props.todoList);
         }
 
         let new_transaction = new ChangeList(old_order, new_order, this, "move", callback);

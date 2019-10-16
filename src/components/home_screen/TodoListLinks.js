@@ -9,7 +9,9 @@ class TodoListLinks extends Component {
                 this.props.todoLists.map((todoList)=>(
                     <TodoListLink  
                         key={todoList.key}
-                        loadList={this.props.loadList} 
+                        loadList={
+                            this.props.loadList
+                        } 
                         todoList={todoList} />
                 ))}
             </div>
