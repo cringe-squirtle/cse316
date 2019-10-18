@@ -91,7 +91,7 @@ export class ListItemsTable extends Component {
         let to_be_removed = this.props.todoList.items[index];
 
         let callback = () =>{
-            this.setState(this.props.todoList, this.foolProof)
+            this.props.loadList(this.props.todoList);
         }
 
         let new_transaction = new ChangeList(to_be_removed, index, this, "delete", callback);
